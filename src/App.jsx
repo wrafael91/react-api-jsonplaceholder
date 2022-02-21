@@ -8,27 +8,34 @@ require("isomorphic-fetch");
 export default function App() {
   const [data, setData] = useState([]);
   const [query, setQuery] = useState("");
+  
+  function apiCallOne() {
+    return fetch("https://jsonplaceholder.typicode.com/todos/")
+    .then(response => response.json())
+    .then((json) => setData(json))
+    .catch(error => {
+      return error;
+    })
+  };
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/todos/")
-    .then(response => response.json())
-    .then((json) => setData(json));
+    apiCallOne();
   }, [])
 
   function search(rows) {
-    const columns = rows[0] && Object.keys(rows[0]);    
-    return rows.filter((row) =>
+    const columns = rows[0] && Object.keys(rows[0]);
+      return rows.filter((row) =>
       columns.some(
         (column) => 
           row[column].toString().toLowerCase().indexOf(query.toLowerCase()) > -1
       )
-    );
-  }
+    ) 
+  };
 
   return (
     <div>
       <div>
-        <h1>Search bar</h1>
+        <h1>Search bar Id and Title</h1>
         <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} />
       </div>
       <div>
